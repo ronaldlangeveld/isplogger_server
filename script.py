@@ -4,8 +4,19 @@ import requests
 import json
 import datetime
 import os
+from apscheduler.schedulers.blocking import BlockingScheduler
+import logging
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
+
+sched = BlockingScheduler()
+
+# Enable logging
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
+
+logger = logging.getLogger(__name__)
+
 load_dotenv()
 
 def initSpeedtest():
@@ -30,7 +41,7 @@ def initSpeedtest():
 
     return data
 
-
+@sched.scheduled_job('interval', minutes=os.getenv("MINS"))
 def test():
     attempts = 10
     key = os.getenv("NETWORK_ID")
@@ -42,23 +53,19 @@ def test():
 
             tst = initSpeedtest()
             print(tst)
-            
-
             req = requests.post(server + "/api/speedtest/"+key, data=tst)
             print(req)
             print("test complete")
-
             return "OK"
 
         except Exception as e:
             print(e)
             if i < attempts - 1:
                 pass
-
                 return "error"
             else:
                 raise
-
         break
 
 test()
+sched.start()
