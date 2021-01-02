@@ -24,8 +24,8 @@ server = "https://isplogger.herokuapp.com"
 interval = 10
 
 def initSpeedtest():
-    key = os.environ.get("NETWORK_ID")
-    print("Speedtest in Progress -- " + str(key))
+    # key = os.environ.get("NETWORK_ID")
+    print("Speedtest in Progress")
     s = speedtest.Speedtest()
     s.get_servers()
     s.get_best_server()
@@ -55,10 +55,8 @@ def test():
         try:
 
             tst = initSpeedtest()
-            print(tst)
             req = requests.post(server + "/api/speedtest/"+key, data=tst)
-            print(req)
-            print("test complete")
+            print("Test complete")
             return "OK"
 
         except Exception as e:
@@ -76,6 +74,6 @@ if key is not False:
 else:
     net_key = input("Enter the network key, obtained from the ISP Logger dashboard:  ")
     os.environ["NETWORK_ID"] = str(net_key)
-    print(net_key)
+    # print(net_key)
     test()
     sched.start()
