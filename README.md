@@ -29,7 +29,7 @@ If this is successful, time to run the container,
 
     $ docker run -it -d -e NETWORK_ID="<the device id you obtained from the website" isp-logger-tester
 
-A speed test will now perform once, and then again every 10 minutes. 
+A speed test will now perform once, and then again every 60 minutes. 
 
 You can see the results on your account at ISP Logger.
 
