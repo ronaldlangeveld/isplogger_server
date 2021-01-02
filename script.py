@@ -21,7 +21,6 @@ load_dotenv()
 
 key = os.environ.get("NETWORK_ID", False)
 server = "https://isplogger.herokuapp.com"
-interval = 10
 
 def initSpeedtest():
     # key = os.environ.get("NETWORK_ID")
@@ -46,7 +45,7 @@ def initSpeedtest():
 
     return data
 
-@sched.scheduled_job('interval', minutes=interval)
+@sched.scheduled_job('interval', minutes=60)
 def test():
     attempts = 10
     key = os.environ.get("NETWORK_ID")

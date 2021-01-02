@@ -27,7 +27,7 @@ build the container by writing: `$ docker build -t isp-logger-tester .`
 
 If this is successful, time to run the container,
 
-    $ docker run -it -e NETWORK_ID="<the device id you obtained from the website" isp-logger-tester
+    $ docker run -it -d -e NETWORK_ID="<the device id you obtained from the website" isp-logger-tester
 
 A speed test will now perform once, and then again every 10 minutes. 
 
