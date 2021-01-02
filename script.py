@@ -19,8 +19,13 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 
+key = os.environ.get("NETWORK_ID", False)
+server = "https://isplogger.herokuapp.com"
+interval = 10
+
 def initSpeedtest():
-    print("Speedtest in Progress")
+    key = os.environ.get("NETWORK_ID")
+    print("Speedtest in Progress -- " + str(key))
     s = speedtest.Speedtest()
     s.get_servers()
     s.get_best_server()
@@ -41,12 +46,10 @@ def initSpeedtest():
 
     return data
 
-@sched.scheduled_job('interval', minutes=os.getenv("MINS"))
+@sched.scheduled_job('interval', minutes=interval)
 def test():
     attempts = 10
-    key = os.getenv("NETWORK_ID")
-    server = os.getenv("SERVER")
-    print(key)
+    key = os.environ.get("NETWORK_ID")
     for i in range(attempts):
     
         try:
@@ -67,5 +70,12 @@ def test():
                 raise
         break
 
-test()
-sched.start()
+if key is not False:
+    test()
+    sched.start()
+else:
+    net_key = input("Enter the network key, obtained from the ISP Logger dashboard:  ")
+    os.environ["NETWORK_ID"] = str(net_key)
+    print(net_key)
+    test()
+    sched.start()
