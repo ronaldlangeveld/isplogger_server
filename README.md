@@ -24,10 +24,11 @@ Docker Instruction:
 
 Locate the cloned repository in your terminal. 
 build the container by writing: `$ docker build -t isp-logger-tester .`
+or get directly from the Hub (Recommended): `$ docker pull ronaldl93/isp-logger `.
 
 If this is successful, time to run the container,
 
-    $ docker run -it -d -e NETWORK_ID="<the device id you obtained from the website" isp-logger-tester
+`$ docker run -it -d -e NETWORK_ID="<the device id you obtained from the website" isp-logger-tester`
 
 A speed test will now perform once, and then again every 60 minutes. 
 
