@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 key = os.environ.get("NETWORK_ID", False)
-server = "https://isplogger.herokuapp.com"
+server = "https://api.isplogger.com"
 
 def initSpeedtest():
     # key = os.environ.get("NETWORK_ID")
