@@ -8,7 +8,7 @@ The project is still heavily work in progress, but a basic version is working.
 What you need:
  
 
-1) Create an account over at https://isplogger.herokuapp.com/
+1) Create an account over at https://isplogger.com/
 
 2) Create a network and obtain your Device ID. It's a UUID string.
 
