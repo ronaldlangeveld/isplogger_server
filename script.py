@@ -7,6 +7,7 @@ import os
 from apscheduler.schedulers.blocking import BlockingScheduler
 import logging
 import ssl
+import sys
 ssl._create_default_https_context = ssl._create_unverified_context
 
 sched = BlockingScheduler()
@@ -50,7 +51,7 @@ def test():
     attempts = 10
     key = os.environ.get("NETWORK_ID")
     for i in range(attempts):
-    
+
         try:
 
             tst = initSpeedtest()
@@ -69,7 +70,8 @@ def test():
 
 if key is not False:
     test()
-    sched.start()
+    if len(sys.argv) == 1 or sys.argv[1] != "--one-shot":
+        sched.start()
 else:
     net_key = input("Enter the network key, obtained from the ISP Logger dashboard:  ")
     os.environ["NETWORK_ID"] = str(net_key)
