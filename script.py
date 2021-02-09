@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+load_dotenv()
 import speedtest
 import requests
 import json
@@ -7,6 +8,8 @@ import os
 from apscheduler.schedulers.blocking import BlockingScheduler
 import logging
 import ssl
+
+
 ssl._create_default_https_context = ssl._create_unverified_context
 
 sched = BlockingScheduler()
@@ -17,7 +20,6 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-load_dotenv()
 
 key = os.environ.get("NETWORK_ID", False)
 server = "https://api.isplogger.com"
@@ -45,7 +47,7 @@ def initSpeedtest():
 
     return data
 
-@sched.scheduled_job('interval', minutes=60)
+@sched.scheduled_job('interval', minutes=60, id='tester')
 def test():
     attempts = 10
     key = os.environ.get("NETWORK_ID")
@@ -73,6 +75,5 @@ if key is not False:
 else:
     net_key = input("Enter the network key, obtained from the ISP Logger dashboard:  ")
     os.environ["NETWORK_ID"] = str(net_key)
-    # print(net_key)
     test()
     sched.start()
