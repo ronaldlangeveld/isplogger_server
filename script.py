@@ -7,6 +7,7 @@ import os
 from apscheduler.schedulers.blocking import BlockingScheduler
 import logging
 import ssl
+import sys
 ssl._create_default_https_context = ssl._create_unverified_context
 
 sched = BlockingScheduler()
@@ -20,10 +21,12 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 key = os.environ.get("NETWORK_ID", False)
+if not key:
+    key = input("Enter the network key, obtained from the ISP Logger dashboard:\t")
+
 server = "https://api.isplogger.com"
 
 def initSpeedtest():
-    # key = os.environ.get("NETWORK_ID")
     print("Speedtest in Progress")
     s = speedtest.Speedtest()
     s.get_servers()
@@ -48,9 +51,8 @@ def initSpeedtest():
 @sched.scheduled_job('interval', minutes=60)
 def test():
     attempts = 10
-    key = os.environ.get("NETWORK_ID")
     for i in range(attempts):
-    
+
         try:
 
             tst = initSpeedtest()
@@ -67,12 +69,6 @@ def test():
                 raise
         break
 
-if key is not False:
-    test()
-    sched.start()
-else:
-    net_key = input("Enter the network key, obtained from the ISP Logger dashboard:  ")
-    os.environ["NETWORK_ID"] = str(net_key)
-    # print(net_key)
-    test()
+test()
+if len(sys.argv) == 1 or sys.argv[1] != "--one-shot":
     sched.start()
