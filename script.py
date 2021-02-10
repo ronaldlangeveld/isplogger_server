@@ -3,13 +3,11 @@ import speedtest
 import requests
 import json
 import datetime
+import time
 import os
-from apscheduler.schedulers.blocking import BlockingScheduler
 import logging
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
-
-sched = BlockingScheduler()
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -20,10 +18,10 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 key = os.environ.get("NETWORK_ID", False)
+interval = int(os.environ.get("INTERVAL", 60)) * 60
 server = "https://api.isplogger.com"
 
 def initSpeedtest():
-    # key = os.environ.get("NETWORK_ID")
     print("Speedtest in Progress")
     s = speedtest.Speedtest()
     s.get_servers()
@@ -45,12 +43,10 @@ def initSpeedtest():
 
     return data
 
-@sched.scheduled_job('interval', minutes=60)
-def test():
+def test(key):
     attempts = 10
-    key = os.environ.get("NETWORK_ID")
     for i in range(attempts):
-    
+
         try:
 
             tst = initSpeedtest()
@@ -67,12 +63,11 @@ def test():
                 raise
         break
 
-if key is not False:
-    test()
-    sched.start()
-else:
-    net_key = input("Enter the network key, obtained from the ISP Logger dashboard:  ")
-    os.environ["NETWORK_ID"] = str(net_key)
-    # print(net_key)
-    test()
-    sched.start()
+if key is False:
+    key = input("Enter the network key, obtained from the ISP Logger dashboard:  ")
+    # print(key)
+
+while (1):
+    test(key)
+    time.sleep(interval)
+    
