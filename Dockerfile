@@ -1,4 +1,4 @@
-FROM python:3.9-alpine
+FROM balenalib/raspberrypi3-python:latest
 
 ADD script.py .
 
