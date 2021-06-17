@@ -1,3 +1,8 @@
+Note: This changes the docker base image to be Pi3 compatible. All other functions remain unchanged.
+Forked from ronaldlangeveld/isplogger_server
+
+
+ORIGINAL RELEASE NOTES:
 
 ISP LOGGER
 
